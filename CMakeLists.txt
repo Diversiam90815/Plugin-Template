@@ -110,3 +110,9 @@ target_compile_options(${PROJECT_NAME} PRIVATE
         ${DEFAULT_CXX_DEBUG_INFORMATION_FORMAT};
         ${DEFAULT_CXX_EXCEPTION_HANDLING}
 )
+
+# Suppress specific compiler warnings
+target_compile_options(${PROJECT_NAME} PRIVATE
+    /wd4146  # Suppress warning C4146
+    /wd4996  # Suppress warning C4996
+)
