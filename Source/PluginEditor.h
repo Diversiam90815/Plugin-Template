@@ -1,10 +1,3 @@
-/*
-  ==============================================================================
-
-    This file contains the basic framework code for a JUCE plugin editor.
-
-  ==============================================================================
-*/
 
 #pragma once
 
@@ -13,21 +6,19 @@
 
 //==============================================================================
 /**
-*/
-class PluginEditor  : public juce::AudioProcessorEditor
+ */
+class PluginEditor : public AudioProcessorEditor
 {
 public:
-    PluginEditor (PluginProcessor&);
-    ~PluginEditor() override;
+	PluginEditor(PluginProcessor &);
+	~PluginEditor() override;
 
-    //==============================================================================
-    void paint (juce::Graphics&) override;
-    void resized() override;
+	//==============================================================================
+	void paint(Graphics &) override;
+	void resized() override;
 
 private:
-    // This reference is provided as a quick way for your editor to
-    // access the processor object that created it.
-    PluginProcessor& audioProcessor;
+	PluginProcessor &audioProcessor;
 
-    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (PluginEditor)
+	JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(PluginEditor)
 };

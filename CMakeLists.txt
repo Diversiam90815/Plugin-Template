@@ -22,6 +22,8 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(Header_Files
         ${SOURCE_FILES_DIR}/PluginProcessor.h
         ${SOURCE_FILES_DIR}/PluginEditor.h
+        
+        ${SOURCE_FILES_DIR}/Parameters.h
 )
 
 set(Source_Files
