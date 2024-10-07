@@ -206,6 +206,20 @@ The `build.py` script simplifies the build process with the following features:
 
 **Note**: The `--debug` or `-d` option affects both preparation and building steps. If you include it, both steps will use the Debug configuration.
 
+
+## Code Formatting with Clang-Format
+
+This project includes a `.clang-format` file that defines the code style guidelines for consistent formatting across the codebase. You can automatically format your code according to these standards using your editor's shortcut.
+
+### How to Use
+
+- **In Visual Studio (or compatible editors on macOS):**
+  - Open the file you wish to format.
+  - Press `Cmd + K`, then `Cmd + D` to auto-format the current file using the predefined style.
+
+This will format your code based on the rules specified in the `.clang-format` file, ensuring consistency and improving code readability.
+
+
 ## Customization
 
 You can customize the project by modifying:
