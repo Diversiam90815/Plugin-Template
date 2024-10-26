@@ -2,6 +2,8 @@
 
 #include "PluginProcessor.h"
 
+
+// Basic test to check compilation and run
 TEST(PluginProcessor, Foo)
 {
     PluginProcessor processor{};

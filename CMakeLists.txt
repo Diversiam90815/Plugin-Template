@@ -9,17 +9,19 @@ set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 
+## Setting the lib directory for project included packages
 set(LIB_DIR ${CMAKE_CURRENT_SOURCE_DIR}/libs)
 
-
+## Include the CPM (Package Manager used by CMake)
 include(cmake/cpm.cmake)
 
+## Setting the environment
 add_compile_definitions(${PROJECT_NAME} PUBLIC -DENV_DEVELOPMENT)
 
 
-#-----------------------------------------------------------------------------------------
+#----------------------------
 # Juce API
-#-----------------------------------------------------------------------------------------
+#----------------------------
 
 CPMAddPackage(
         NAME JUCE
@@ -30,10 +32,9 @@ CPMAddPackage(
 )
 
 
-
-#-----------------------------------------------------------------------------------------
+#----------------------------
 # Google Test
-#-----------------------------------------------------------------------------------------
+#----------------------------
 
 CPMAddPackage(
         NAME GOOGLETEST
@@ -45,13 +46,11 @@ CPMAddPackage(
         "gtest_force_shared_crt ON"
         )
         
-
 enable_testing()
 
 
 add_subdirectory(test)
 add_subdirectory(plugin)
-
 
 
 if(MSVC)
