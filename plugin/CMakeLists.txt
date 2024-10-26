@@ -1,11 +1,24 @@
+#-----------------------------------------------------------------------------------------
+# Audio Plugin
+#-----------------------------------------------------------------------------------------
+
 cmake_minimum_required(VERSION 3.25)
 
 project(AudioPlugin VERSION 0.1.0)
 
+
+#-----------------------------------------------------------------------------------------
+#   Directories
+#-----------------------------------------------------------------------------------------
+
 set (SOURCE_FILES_DIR ${PROJECT_SOURCE_DIR}/Source)
 set (HEADER_FILES_DIR ${PROJECT_SOURCE_DIR}/include)
 
-# Add the plugin target
+
+#-----------------------------------------------------------------------------------------
+#   Juce Plugin Target
+#-----------------------------------------------------------------------------------------
+
 juce_add_plugin(${PROJECT_NAME}
                 COMPANY_NAME "DiversiamProduction"
                 PLUGIN_CODE IOTO
@@ -17,12 +30,11 @@ juce_add_plugin(${PROJECT_NAME}
                 PRODUCT_NAME "${PROJECT_NAME}"
 )
 
-# Generate the JuceHeader.h
-# juce_generate_juce_header(${PROJECT_NAME})
+configure_file(${CMAKE_SOURCE_DIR}/Project.h.in ${CMAKE_BINARY_DIR}/include/Project.h @ONLY)
 
 
 #-----------------------------------------------------------------------------------------
-# Files
+#   Files
 #-----------------------------------------------------------------------------------------
 
 set(Header_Files
@@ -37,8 +49,18 @@ set(Source_Files
          ${SOURCE_FILES_DIR}/PluginEditor.cpp
 )
 
-source_group("Source Files" FILES ${Source_Files})
-source_group("Header Files" FILES ${Header_Files})
+
+#-----------------------------------------------------------------------------------------
+#   Source Groups
+#-----------------------------------------------------------------------------------------
+
+source_group("Plugin Sources" FILES ${Source_Files})
+source_group("Plugin Headers" FILES ${Header_Files})
+
+
+#-----------------------------------------------------------------------------------------
+#   Target Sources
+#-----------------------------------------------------------------------------------------
 
 set(ALL_FILES
     ${Header_Files}
@@ -50,13 +72,39 @@ target_sources(${PROJECT_NAME} PRIVATE
 )
 
 
+#-----------------------------------------------------------------------------------------
+#   Target Include Directories
+#-----------------------------------------------------------------------------------------
+
 target_include_directories(${PROJECT_NAME} PUBLIC
         ${PROJECT_BINARY_DIR}
+        ${CMAKE_BINARY_DIR}/include
         ${SOURCE_FILES_DIR}
         ${HEADER_FILES_DIR}
 )
 
 
+#-----------------------------------------------------------------------------------------
+#   Target Link Libraries
+#-----------------------------------------------------------------------------------------
+
+target_link_libraries(${PROJECT_NAME}
+    PRIVATE
+        juce::juce_audio_utils
+        juce::juce_audio_plugin_client
+        juce::juce_core
+    PUBLIC
+        juce::juce_recommended_config_flags
+        juce::juce_recommended_lto_flags
+        juce::juce_recommended_warning_flags
+)
+
+
+#-----------------------------------------------------------------------------------------
+#   Target Compile Definitions
+#-----------------------------------------------------------------------------------------
+
+## JUCE compiler options
 target_compile_definitions(${PROJECT_NAME} PUBLIC
         JUCE_WEB_BROWSER=0
         JUCE_USE_CURL=0
@@ -68,25 +116,9 @@ target_compile_definitions(${PROJECT_NAME} PUBLIC
         JUCE_ASIO=0
         JUCE_USE_ANDROID_OBOE=1
         JUCE_USE_OBOE_STABILIZED_CALLBACK=1
-        -DENV_DEVELOPMENT
-        _CRT_SECURE_NO_WARNINGS
 )
 
-
-set (PROJECT_LIBS juce::juce_audio_utils
-                  juce::juce_audio_plugin_client
-                  juce::juce_core
-)
-
-target_link_libraries(${PROJECT_NAME} PRIVATE ${PROJECT_LIBS} )
-
-target_link_libraries(${PROJECT_NAME}
-    PUBLIC
-        juce::juce_recommended_config_flags
-        juce::juce_recommended_lto_flags
-        juce::juce_recommended_warning_flags
-)
-
+## Project compiler options
 target_compile_options(${PROJECT_NAME} PRIVATE
         $<$<CONFIG:Release>:
                 /Oi;
@@ -98,11 +130,7 @@ target_compile_options(${PROJECT_NAME} PRIVATE
         >
         /sdl
         /MP
+        /wd4146  # Suppress warning C4146
         ${DEFAULT_CXX_DEBUG_INFORMATION_FORMAT};
         ${DEFAULT_CXX_EXCEPTION_HANDLING}
-)
-
-# Suppress specific compiler warnings
-target_compile_options(${PROJECT_NAME} PRIVATE
-    /wd4146  # Suppress warning C4146
 )

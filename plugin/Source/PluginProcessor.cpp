@@ -13,7 +13,7 @@ PluginProcessor::PluginProcessor()
 						 .withOutput("Output", juce::AudioChannelSet::stereo(), true)
 #endif
 						 ),
-	  mValueTreeState(*this, nullptr, "PATERMERS", createParameterLayout())
+	  mValueTreeState(*this, nullptr, "PARAMETERS", createParameterLayout())
 #endif
 {
 	mValueTreeState.addParameterListener(paramInput, this);
@@ -28,7 +28,7 @@ PluginProcessor::~PluginProcessor()
 
 const juce::String PluginProcessor::getName() const
 {
-	return "";	// Create project file
+	return PROJECT_NAME;
 }
 
 bool PluginProcessor::acceptsMidi() const
@@ -129,8 +129,8 @@ bool PluginProcessor::isBusesLayoutSupported(const BusesLayout &layouts) const
 void PluginProcessor::processBlock(juce::AudioBuffer<float> &buffer, juce::MidiBuffer &midiMessages)
 {
 	juce::ScopedNoDenormals noDenormals;
-	auto			  totalNumInputChannels	 = getTotalNumInputChannels();
-	auto			  totalNumOutputChannels = getTotalNumOutputChannels();
+	auto					totalNumInputChannels  = getTotalNumInputChannels();
+	auto					totalNumOutputChannels = getTotalNumOutputChannels();
 
 	for (auto i = totalNumInputChannels; i < totalNumOutputChannels; ++i)
 		buffer.clear(i, 0, buffer.getNumSamples());
@@ -174,7 +174,7 @@ juce::AudioProcessorValueTreeState::ParameterLayout PluginProcessor::createParam
 	std::vector<std::unique_ptr<juce::RangedAudioParameter>> params;
 
 	// add parameters here
-	auto											   input = std::make_unique<juce::AudioParameterFloat>(paramInput, inputGainName, inputMinValue, inputMaxValue, inputDefaultValue);
+	auto input = std::make_unique<juce::AudioParameterFloat>(paramInput, inputGainName, inputMinValue, inputMaxValue, inputDefaultValue);
 
 	params.push_back(std::move(input));
 
