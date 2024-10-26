@@ -8,9 +8,9 @@ PluginProcessor::PluginProcessor()
 	: AudioProcessor(BusesProperties()
 #if !JucePlugin_IsMidiEffect
 #if !JucePlugin_IsSynth
-						 .withInput("Input", AudioChannelSet::stereo(), true)
+						 .withInput("Input", juce::AudioChannelSet::stereo(), true)
 #endif
-						 .withOutput("Output", AudioChannelSet::stereo(), true)
+						 .withOutput("Output", juce::AudioChannelSet::stereo(), true)
 #endif
 						 ),
 	  mValueTreeState(*this, nullptr, "PATERMERS", createParameterLayout())
@@ -26,9 +26,9 @@ PluginProcessor::~PluginProcessor()
 }
 
 
-const String PluginProcessor::getName() const
+const juce::String PluginProcessor::getName() const
 {
-	return JucePlugin_Name;
+	return "";	// Create project file
 }
 
 bool PluginProcessor::acceptsMidi() const
@@ -90,7 +90,7 @@ const juce::String PluginProcessor::getProgramName(int index)
 }
 
 
-void PluginProcessor::changeProgramName(int index, const String &newName)
+void PluginProcessor::changeProgramName(int index, const juce::String &newName)
 {
 }
 
@@ -112,7 +112,7 @@ bool PluginProcessor::isBusesLayoutSupported(const BusesLayout &layouts) const
 	juce::ignoreUnused(layouts);
 	return true;
 #else
-	if (layouts.getMainOutputChannelSet() != AudioChannelSet::mono() && layouts.getMainOutputChannelSet() != AudioChannelSet::stereo())
+	if (layouts.getMainOutputChannelSet() != juce::AudioChannelSet::mono() && layouts.getMainOutputChannelSet() != juce::AudioChannelSet::stereo())
 		return false;
 
 #if !JucePlugin_IsSynth
@@ -126,9 +126,9 @@ bool PluginProcessor::isBusesLayoutSupported(const BusesLayout &layouts) const
 #endif
 
 
-void PluginProcessor::processBlock(AudioBuffer<float> &buffer, MidiBuffer &midiMessages)
+void PluginProcessor::processBlock(juce::AudioBuffer<float> &buffer, juce::MidiBuffer &midiMessages)
 {
-	ScopedNoDenormals noDenormals;
+	juce::ScopedNoDenormals noDenormals;
 	auto			  totalNumInputChannels	 = getTotalNumInputChannels();
 	auto			  totalNumOutputChannels = getTotalNumOutputChannels();
 
@@ -150,16 +150,16 @@ bool PluginProcessor::hasEditor() const
 }
 
 
-AudioProcessorEditor *PluginProcessor::createEditor()
+juce::AudioProcessorEditor *PluginProcessor::createEditor()
 {
 	// We create a generic audio processor editor here, so we can work with the processing
 	// without concerning about the UI at first!
 
-	return new GenericAudioProcessorEditor(*this);
+	return new juce::GenericAudioProcessorEditor(*this);
 }
 
 
-void PluginProcessor::getStateInformation(MemoryBlock &destData)
+void PluginProcessor::getStateInformation(juce::MemoryBlock &destData)
 {
 }
 
@@ -169,12 +169,12 @@ void PluginProcessor::setStateInformation(const void *data, int sizeInBytes)
 }
 
 
-AudioProcessorValueTreeState::ParameterLayout PluginProcessor::createParameterLayout()
+juce::AudioProcessorValueTreeState::ParameterLayout PluginProcessor::createParameterLayout()
 {
-	std::vector<std::unique_ptr<RangedAudioParameter>> params;
+	std::vector<std::unique_ptr<juce::RangedAudioParameter>> params;
 
 	// add parameters here
-	auto											   input = std::make_unique<AudioParameterFloat>(paramInput, inputGainName, inputMinValue, inputMaxValue, inputDefaultValue);
+	auto											   input = std::make_unique<juce::AudioParameterFloat>(paramInput, inputGainName, inputMinValue, inputMaxValue, inputDefaultValue);
 
 	params.push_back(std::move(input));
 
@@ -182,12 +182,12 @@ AudioProcessorValueTreeState::ParameterLayout PluginProcessor::createParameterLa
 }
 
 
-void PluginProcessor::parameterChanged(const String &parameterID, float newValue)
+void PluginProcessor::parameterChanged(const juce::String &parameterID, float newValue)
 {
 }
 
 
-AudioProcessor *JUCE_CALLTYPE createPluginFilter()
+juce::AudioProcessor *JUCE_CALLTYPE createPluginFilter()
 {
 	return new PluginProcessor();
 }

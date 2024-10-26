@@ -1,20 +1,19 @@
 
 #pragma once
 
-#include <JuceHeader.h>
 #include "PluginProcessor.h"
 
 //==============================================================================
 /**
  */
-class PluginEditor : public AudioProcessorEditor
+class PluginEditor : public juce::AudioProcessorEditor
 {
 public:
 	PluginEditor(PluginProcessor &);
 	~PluginEditor() override;
 
 	//==============================================================================
-	void paint(Graphics &) override;
+	void paint(juce::Graphics &) override;
 	void resized() override;
 
 private:
