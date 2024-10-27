@@ -4,7 +4,7 @@
 
 
 // Basic test to check compilation and run
-TEST(PluginProcessor, Foo)
+TEST(PluginProcessor, TestTemplate)
 {
     PluginProcessor processor{};
     ASSERT_FALSE(true);
